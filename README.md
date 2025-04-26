@@ -1,59 +1,157 @@
-# `dbank`
+# dBank (v1.0)
 
-Welcome to your new `dbank` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+dBank is a decentralized banking application built on the Internet Computer (IC) blockchain. It allows users to manage their funds by performing operations such as checking balances, topping up their accounts, and withdrawing funds. The project consists of a backend canister written in Motoko and a frontend built with React.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+---
 
-To learn more before you start working with `dbank`, see the following documentation available online:
+## ✨ Overview
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Motoko Programming Language Guide](https://internetcomputer.org/docs/current/motoko/main/motoko)
-- [Motoko Language Quick Reference](https://internetcomputer.org/docs/current/motoko/main/language-manual)
+### **Frontend**
+- Built with React and TypeScript.
+- User-friendly interface for managing account balances.
+- Real-time updates of account balances using periodic polling.
+- Input validation for top-up and withdrawal amounts.
+- Toast notifications for success and error messages using `react-toastify`.
 
-If you want to start working on your project right away, you might want to try the following commands:
+### **Backend**
+- Written in Motoko, deployed as a canister on the Internet Computer.
+- Handles operations such as:
+  - Checking account balances.
+  - Topping up accounts.
+  - Withdrawing funds.
+  - Compounding interest over time.
+- Ensures data persistence using stable variables.
 
+---
+
+## 📱 Technologies Used
+
+### **Frontend**
+- **React**: JavaScript library for building user interfaces.
+- **TypeScript**: For type safety and better developer experience.
+- **Vite**: Fast frontend build tool.
+- **React Toastify**: For toast notifications.
+- **Sass**: For styling.
+
+### **Backend**
+- **Motoko**: Programming language for writing canisters on the Internet Computer.
+- **Internet Computer (IC)**: Blockchain platform for hosting decentralized applications.
+
+---
+
+## 📱 Project Structure
 ```bash
-cd dbank/
-dfx help
-dfx canister --help
+dbank/
+├── .env                     # Environment variables
+├── dfx.json                 # DFX configuration
+├── package.json             # Project dependencies
+├── README.md                # Project documentation
+├── tsconfig.json            # TypeScript configuration
+├── src/
+│   ├── dbank_backend/       # Backend canister (Motoko)
+│   │   └── main.mo          # Main Motoko file
+│   ├── dbank_frontend/      # Frontend application (React)
+│   │   ├── public/          # Static assets
+│   │   │   ├── styles.css   # Global styles
+│   │   │   ├── dbank_logo.png
+│   │   │   └── favicon.ico
+│   │   ├── src/             # React components
+│   │   │   ├── components/
+│   │   │   │   └── App.tsx  # Main React component
+│   │   │   └── index.tsx    # React entry point
+│   │   ├── package.json     # Frontend dependencies
+│   │   └── vite.config.js   # Vite configuration
+│   └── declarations/        # Generated canister declarations
+└── .dfx/                    # DFX-generated files
 ```
 
-## Running the project locally
+## 💻 Installation
 
-If you want to test your project locally, you can use the following commands:
+### **Prerequisites**
+- Node.js (>= 16.0.0)
+- DFX SDK (>= 0.26.0)
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+### **Setup**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/chthollys/dbank-app.git
+   cd dbank
+2. Install dependencies:
+   ```bash
+   npm install
+3. Clone the repository:
+   ```bash
+   dfx start
+4. Clone the repository:
+   ```bash
+   dfx deploy
+5. Clone the repository:
+   ```bash
+   cd src/dbank_frontend
+   npm run start
+6. Clone the repository:
+   ```bash
+   http://localhost:3000
+   ```
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
+## 🔎 Usage
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+### Features
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+1. Check Balance: The current balance is displayed on the main screen and updates in real-time.
+2. Top Up: Enter an amount in the "Top Up" field and submit the form to add funds to your account.
+3. Withdraw: Enter an amount in the "Withdraw" field and submit the form to withdraw funds from your account.
+4. Compound Interest: Interest is compounded periodically based on the time elapsed since the last transaction.
 
-```bash
-npm run generate
-```
+### 📲 API Endpoints (Backend Canister)
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+1. `checkBalance`
+    * Description: Returns the current balance of the account.
+    * Type: Query
+    * Response:
+    ```bash
+    {
+      "balance": 300.0
+    }
+2. `topUp`
+    * Description: Adds funds from the account.
+    * Type: Update
+    * Response:
+    ```bash
+    {
+      "amount": 30.0
+    }
+3. `checkBalance`
+    * Description: Withdraws funds from the account.
+    * Type: Update
+    * Response:
+    ```bash
+    {
+      "amount": 20.0
+    }
+4. `compound`
+    * Description: Returns the current balance of the account.
+    * Type: Update
 
-If you are making frontend changes, you can start a development server with
 
-```bash
-npm start
-```
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+## 🗄️ Environment Variables
 
-### Note on frontend environment variables
+the .env file contains the following variables:
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+| Variable        | Description                      |
+|-----------------|----------------------------------|
+| `DFX_VERSION`   | Version of the DFX SDK           |
+| `DFX_NETWORK`   | Network to deploy the canisters (`local`)     |
+| `CANISTER_ID_DBANK_FRONTEND`   | Canister ID for the frontend   |
+| `CANISTER_ID_DBANK_BACKEND`    | Canister ID for the backend    |
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+## 📋 Future Improvements
+1. Add user authentication for personalized accounts.
+2. Implement transaction history for better tracking.
+3. Add support for multiple currencies.
+4. Improve the UI/UX for a more polished experience.
+5. Optimize backend logic for better performance.
+
+## 🖋️ Acknowledgments
+This project is part of a Udemy course on Web3 and blockchain development. Special thanks to the course instructor for guidance and support.
